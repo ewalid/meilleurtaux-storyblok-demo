@@ -74,8 +74,7 @@ def collect():
         content = api("GET", f"/stories/{s[0]['id']}")["story"]["content"]
         for v in content.values():  # skip the page root itself
             walk(v, found)
-    for k, v in EXTRA.items():
-        found.setdefault(k, v)
+    found.update(EXTRA)  # hand-written presets win over page instances
     # The grid preset should be the simulator cards (icon layout), not whichever grid came first.
     return found
 

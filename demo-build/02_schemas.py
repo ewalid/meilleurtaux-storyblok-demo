@@ -550,7 +550,7 @@ PAGES = {
                     description="Une page construite librement à partir des sections (accueil, Actualités, pages de campagne…).",
                     schema=plain({"body": None}, [SEO_TAB])),
     "mt-product-page": dict(display_name="Page produit", icon="block-locked", color="#c0543a", is_root=True, is_nestable=False,
-                            description="Modèle verrouillé : un Hero, jusqu'à 14 sections de contenu, un appel à l'action final.",
+                            description="Modèle verrouillé : un Hero, jusqu'à 20 sections de contenu, un appel à l'action final.",
                             schema=plain({
                                 "product": option("Produit", CATEGORIES, "credit-immobilier",
                                                   "Sert au fil d'Ariane et aux actualités liées."),
@@ -633,8 +633,8 @@ def main():
     PAGES["mt-page"]["schema"]["body"] = {**body_field, "pos": 0}
     ps = PAGES["mt-product-page"]["schema"]
     ps["hero"] = {**bloks("Hero", ["mt-hero"], "Exactement un Hero.", maximum=1, minimum=1), "pos": 1}
-    ps["sections"] = {**bloks("Sections de contenu", [n for n in section_names if n not in ("mt-hero", "mt-cta")],
-                              "Jusqu'à 14 sections entre le Hero et l'appel à l'action.", maximum=14), "pos": 2}
+    ps["sections"] = {**bloks("Sections de contenu", [n for n in section_names if n != "mt-hero"],
+                              "Jusqu'à 20 sections entre le Hero et l'appel à l'action.", maximum=20), "pos": 2}
     ps["cta"] = {**bloks("Appel à l'action final", ["mt-cta"], "Un seul.", maximum=1), "pos": 3}
     after = PAGES["mt-article"]["schema"]["after"]
     PAGES["mt-article"]["schema"]["after"] = {**bloks("Sections après l'article", ["mt-cta", "mt-news", "mt-simulator", "mt-card-grid"],
