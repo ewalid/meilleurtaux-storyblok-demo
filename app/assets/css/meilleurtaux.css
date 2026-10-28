@@ -352,7 +352,9 @@
   .mt-rich ol {
     margin: 0 0 0.9em;
     padding-left: 1.25em;
+    list-style: disc;
   }
+  .mt-rich ol { list-style: decimal; }
   .mt-rich li { margin: 0.3em 0; }
   .mt-rich li::marker { color: var(--accent); }
   .mt-rich li p { margin: 0; }
@@ -555,12 +557,14 @@
   @media (width >= 1024px) {
     .mt-header__logo img { height: 40px; }
   }
-  .mt-header__tp {
+  .mt-header .mt-header__tp {
     display: none;
   }
   @media (width >= 900px) {
-    .mt-header__tp { display: flex; }
+    .mt-header .mt-header__tp { display: inline-flex; }
   }
+  .mt-header__logo { flex: none; }
+  .mt-header .mt-btn { white-space: nowrap; }
   .mt-header__actions {
     display: flex;
     align-items: center;
@@ -579,7 +583,7 @@
   }
   @media (width < 768px) {
     .mt-header__actions { gap: 4px; }
-    .mt-header__burger { width: 40px; margin-right: -8px; }
+    .mt-header__burger { width: 40px; }
     .mt-header__actions .mt-btn {
       min-height: 38px;
       padding: 0 14px;
@@ -904,6 +908,11 @@
     .mt-choice { min-width: 220px; }
   }
   .mt-hero__tp { margin-top: 24px; align-items: flex-start; }
+  @media (width < 600px) {
+    .mt-choices { gap: 10px; }
+    .mt-choice { flex: 1 1 0; min-width: 0; padding: 12px; font-size: 14px; }
+    .mt-tabs__tab { padding: 7px 12px; font-size: 15px; }
+  }
   .mt-hero__media {
     position: relative;
     overflow: hidden;

@@ -28,7 +28,7 @@ const homeHref = computed(() => (lang.value ? `/${lang.value}` : '/'));
 
 <template>
   <header class="mt-header" :class="{ 'is-open': open }">
-    <div class="mt-header__top mt-wrap mt-w-wide">
+    <div class="mt-header__top mt-wrap mt-w-standard">
       <NuxtLink :to="homeHref" class="mt-header__logo" aria-label="Meilleurtaux, accueil">
         <img v-if="config.logo?.filename" :src="config.logo.filename" :alt="config.logo.alt || 'Meilleurtaux'" class="mt-hide-mobile" width="300" height="40" />
         <img v-if="config.logo_mobile?.filename || config.logo?.filename" :src="(config.logo_mobile || config.logo).filename" alt="Meilleurtaux" class="mt-hide-desktop" width="68" height="30" />
@@ -52,7 +52,7 @@ const homeHref = computed(() => (lang.value ? `/${lang.value}` : '/'));
       <Transition name="mt-fade">
         <div v-if="open" class="mt-mega" @mouseenter="enter(open)">
           <template v-for="item in nav" :key="item._uid">
-            <div v-if="open === item._uid" class="mt-mega__inner mt-wrap mt-w-wide">
+            <div v-if="open === item._uid" class="mt-mega__inner mt-wrap mt-w-standard">
               <div class="mt-mega__main">
                 <div v-if="item.cta?.length" class="mt-mega__cta"><MtBtn v-for="b in item.cta" :key="b._uid" :button="b" /></div>
                 <div class="mt-mega__cols" :style="{ '--cols': Math.max(1, item.columns?.length || 1) }">

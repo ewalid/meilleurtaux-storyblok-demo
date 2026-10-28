@@ -16,7 +16,7 @@ const sent = ref(false);
 
 <template>
   <footer class="mt-footer">
-    <div class="mt-wrap mt-w-wide mt-footer__top">
+    <div class="mt-wrap mt-w-standard mt-footer__top">
       <div class="mt-footer__brand">
         <img v-if="config.footer_logo?.filename" :src="config.footer_logo.filename" :alt="config.footer_logo.alt || 'Meilleurtaux'" width="260" height="34" />
         <div class="mt-footer__cols">
@@ -44,14 +44,14 @@ const sent = ref(false);
       </div>
     </div>
     <div v-if="config.product_columns?.length" class="mt-footer__products">
-      <div class="mt-wrap mt-w-wide mt-footer__pgrid">
+      <div class="mt-wrap mt-w-standard mt-footer__pgrid">
         <div v-for="col in config.product_columns" :key="col._uid" v-editable="col" class="mt-footer__col">
           <p class="mt-footer__title">{{ col.title }}</p>
           <NuxtLink v-for="l in col.links" :key="l._uid" :to="href(l.link) || '/'">{{ l.label }}</NuxtLink>
         </div>
       </div>
     </div>
-    <div class="mt-footer__legal mt-wrap mt-w-wide">
+    <div class="mt-footer__legal mt-wrap mt-w-standard">
       <MtRich :doc="config.legal_text" />
       <p v-if="copyright" class="mt-footer__copy">{{ copyright }}</p>
     </div>
