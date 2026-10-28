@@ -60,7 +60,8 @@ watchEffect(() => {
   const c = story.value?.content;
   mtStoryName.value = story.value?.name || '';
   mtPageComponent.value = c?.component || null;
-  toc.value = mtTocFrom([...(c?.body || []), ...(c?.hero || []), ...(c?.sections || []), ...(c?.cta || [])]);
+  // Only block lists: an article's `body` is a rich-text document, not an array.
+  toc.value = mtTocFrom(['body', 'hero', 'sections', 'cta', 'after'].flatMap(k => (Array.isArray(c?.[k]) ? c[k] : [])));
 });
 
 const viewingSiteConfig = ref(['site-config', 'mt-site-config'].includes(story.value?.content?.component));
