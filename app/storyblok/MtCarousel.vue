@@ -13,7 +13,7 @@ const NuxtLink = resolveComponent('NuxtLink');
       <MtRich :doc="blok.intro" class="mt-lead" />
     </div>
     <MtScroller :label="blok.title || 'Carrousel'">
-      <component :is="href(c.link) ? NuxtLink : 'article'" v-for="c in blok.cards" :key="c._uid" v-editable="c" :to="href(c.link) || undefined" class="mt-ccard" :class="`mt-ccard--${layout}`">
+      <component :is="href(c.link) ? NuxtLink : 'article'" v-for="(c, ci) in blok.cards" :key="c._uid" v-editable="c" :to="href(c.link) || undefined" class="mt-ccard" :class="[`mt-ccard--${layout}`, { 'is-featured': layout === 'stories' && ci === 0 }]">
         <div class="mt-ccard__img">
           <MtMedia v-if="c.image?.filename" :asset="c.image" cover :width="700" />
           <span v-if="layout === 'stories' && c.tag" class="mt-ccard__tag">{{ c.tag }}</span>

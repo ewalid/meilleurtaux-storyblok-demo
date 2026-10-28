@@ -24,21 +24,26 @@ const nav = computed(() => props.config.nav || []);
 const href = l => mtHref(l, lang.value);
 const NuxtLink = resolveComponent('NuxtLink');
 const homeHref = computed(() => (lang.value ? `/${lang.value}` : '/'));
+// Mobile: the last header button becomes an account icon, as on the live site.
+const lastButton = computed(() => (props.config.header_buttons || []).at(-1));
+const accountHref = computed(() => mtHref(lastButton.value?.link, lang.value));
+const accountLabel = computed(() => lastButton.value?.label || 'Mon compte');
 </script>
 
 <template>
   <header class="mt-header" :class="{ 'is-open': open }">
     <div class="mt-header__top mt-wrap mt-w-standard">
+      <button type="button" class="mt-header__burger mt-hide-desktop" :aria-expanded="drawer" aria-label="Menu" @click="drawer = !drawer">
+        <MtIcon :name="drawer ? 'close' : 'menu'" :size="26" />
+      </button>
       <NuxtLink :to="homeHref" class="mt-header__logo" aria-label="Meilleurtaux, accueil">
         <img v-if="config.logo?.filename" :src="config.logo.filename" :alt="config.logo.alt || 'Meilleurtaux'" class="mt-hide-mobile" width="300" height="40" />
         <img v-if="config.logo_mobile?.filename || config.logo?.filename" :src="(config.logo_mobile || config.logo).filename" alt="Meilleurtaux" class="mt-hide-desktop" width="68" height="30" />
       </NuxtLink>
       <MtTrustpilot class="mt-header__tp" />
       <div class="mt-header__actions">
-        <MtBtn v-for="(b, i) in config.header_buttons" :key="b._uid" :button="b" :class="{ 'mt-hide-mobile': i === 0 }" />
-        <button type="button" class="mt-header__burger mt-hide-desktop" :aria-expanded="drawer" aria-label="Menu" @click="drawer = !drawer">
-          <MtIcon :name="drawer ? 'close' : 'menu'" :size="26" />
-        </button>
+        <MtBtn v-for="b in config.header_buttons" :key="b._uid" :button="b" class="mt-hide-mobile" />
+        <a v-if="accountHref" :href="accountHref" class="mt-header__account mt-hide-desktop" :aria-label="accountLabel"><MtIcon name="user" :size="22" /></a>
       </div>
     </div>
     <nav class="mt-nav mt-hide-mobile" aria-label="Menu principal" @mouseleave="leave">

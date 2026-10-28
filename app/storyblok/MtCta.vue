@@ -6,7 +6,11 @@ const layout = computed(() => props.blok.layout || 'band');
 <template>
   <MtSection :blok="blok" :defaults="{ background: 'terracotta', align: 'center' }" class="mt-cta" :class="`mt-cta--${layout}`">
     <div class="mt-cta__grid">
-      <div class="mt-cta__copy">
+      <div v-if="layout === 'pill'" class="mt-cta__pill">
+        <MtHeading :text="blok.title" :highlight="blok.highlight" size="s" tag="p" />
+        <MtButtons :buttons="blok.buttons" :stack="false" />
+      </div>
+      <div v-else class="mt-cta__copy">
         <p v-if="blok.eyebrow" class="mt-eyebrow">{{ blok.eyebrow }}</p>
         <MtHeading :text="blok.title" :highlight="blok.highlight" :size="blok.title_size || 'm'" />
         <MtRich :doc="blok.text" class="mt-lead" />

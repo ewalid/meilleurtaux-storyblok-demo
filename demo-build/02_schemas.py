@@ -270,12 +270,16 @@ SECTIONS = {
         schema=section({
             "layout": layout([("image_left", "Image à gauche"), ("image_right", "Image à droite"),
                               ("image_edge", "Grande image collée à droite (recrutement)"),
-                              ("text", "Texte seul, centré"), ("rating", "Texte + note clients à côté")], "image_left"),
+                              ("text", "Texte seul, centré"), ("rating", "Texte + note clients à côté"),
+                              ("quote", "Citation d'expert (photo ronde, guillemets)")], "image_left"),
             "icon": media("Icône", "Petite icône à côté du titre (optionnelle).", videos=False),
             "eyebrow": EYEBROW(), "title": text("Titre"), "highlight": HIGHLIGHT(),
             "text": rich("Texte", "Les listes à puces sont bien mises en forme."),
             "buttons": BUTTONS(),
-            "media": media("Image ou vidéo", conditional_settings=hide_when(("layout", "equals", "text"), ("layout", "equals", "rating"))),
+            "media": media("Image ou vidéo", "Pour la Citation d'expert : la photo de l'expert (carrée).",
+                           conditional_settings=hide_when(("layout", "equals", "text"), ("layout", "equals", "rating"))),
+            "quote_name": text("Nom de l'expert", "Ex. Guillaume Fourt", translatable=False, conditional_settings=hide_unless("layout", "quote")),
+            "quote_role": text("Fonction de l'expert", "Ex. Directeur des Partenariats Bancaires", conditional_settings=hide_unless("layout", "quote")),
             "card_color": option("Couleur de la carte", [("cream", "Crème"), ("white", "Blanc avec ombre"), ("peach", "Pêche")], "cream"),
         }, style_tab(background="white", with_align=False, title_size="m"))),
 
@@ -309,7 +313,7 @@ SECTIONS = {
         schema=section({
             "layout": layout([("icon", "Icône centrée + bouton (simulateurs)"), ("list", "Titre en couleur + liste (types de prêt)"),
                               ("case", "Exemple client avec photo ronde"), ("steps", "Étapes numérotées avec icône"),
-                              ("photo", "Photo en haut + texte")], "icon"),
+                              ("photo", "Photo en haut + texte"), ("tiles", "Tuiles liens compactes (guide)")], "icon"),
             "eyebrow": EYEBROW(), "title": text("Titre"), "highlight": HIGHLIGHT(), "intro": rich("Texte d'introduction"),
             "columns": option("Cartes par ligne (ordinateur)", [("2", "2"), ("3", "3"), ("4", "4")], "3"),
             "cards": bloks("Cartes", ["mt-card"]),
@@ -423,7 +427,7 @@ SECTIONS = {
         display_name="Appel à l'action", icon="block-flag", color="#c0543a", preview_field="title",
         description="Bandeau de fin de page avec un titre et un ou deux boutons.",
         schema=section({
-            "layout": layout([("band", "Bandeau centré"), ("split", "Texte + image")], "band"),
+            "layout": layout([("band", "Bandeau centré"), ("split", "Texte + image"), ("pill", "Bandeau compact sur une ligne")], "band"),
             "eyebrow": EYEBROW(), "title": text("Titre"), "highlight": HIGHLIGHT(), "text": rich("Texte"),
             "buttons": BUTTONS(),
             "media": media("Image", videos=True, conditional_settings=hide_unless("layout", "split")),
