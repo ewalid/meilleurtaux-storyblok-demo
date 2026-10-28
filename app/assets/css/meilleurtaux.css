@@ -1347,10 +1347,10 @@
   .mt-trust__title { font-weight: 400; max-width: 900px; margin-inline: auto; }
   @media (width < 768px) {
     .mt-trust__title.mt-h--m { font-size: 22px; line-height: 1.4; }
-    .mt-trust__item { display: grid; grid-template-columns: 40px 1fr; gap: 2px 14px; padding: 16px 18px; text-align: left; }
-    .mt-trust__item .mt-icon { grid-row: span 2; width: 32px; height: 32px; align-self: center; }
-    .mt-trust__name { margin: 0; }
-    .mt-trust__text { max-width: none; margin: 0; font-size: 14px; }
+    .mt-trust .mt-trust__item { display: grid; grid-template-columns: 40px 1fr; gap: 2px 14px; padding: 16px 18px; text-align: left; }
+    .mt-trust .mt-trust__item .mt-icon { grid-row: span 2; width: 32px; height: 32px; align-self: center; }
+    .mt-trust .mt-trust__name { margin: 0; }
+    .mt-trust .mt-trust__text { max-width: none; margin: 0; font-size: 14px; }
   }
   @media (width >= 1024px) {
     .mt-trust__title.mt-h--m { font-size: 32px; line-height: 1.45; }
