@@ -1,0 +1,35 @@
+<script setup>
+const props = defineProps({ item: Object, reducedFontWeight: Boolean });
+
+const { query } = useRoute();
+const inEditor = computed(() => {
+  return !!query._storyblok;
+});
+
+const url = computed(() => {
+  if (props.item.link.url !== '') {
+    return '';
+  }
+  switch (props.item.link.linktype) {
+    case 'story':
+      return `/${props.item.link.story?.full_slug}`;
+    case 'email':
+      return `mailto:${props.item.link.email}`;
+    case 'url':
+    case 'asset':
+    default:
+      return props.item.link.url;
+  }
+});
+</script>
+
+<template>
+  <NuxtLink
+    v-editable="item"
+    :to="inEditor ? '' : url"
+    class="focus-ring relative flex h-full cursor-pointer items-center text-base transition-colors"
+    :class="props.reducedFontWeight ? 'font-normal' : 'font-medium'"
+  >
+    {{ item.label }}
+  </NuxtLink>
+</template>
