@@ -46,7 +46,8 @@
     max-width: 100%;
   }
 
-  .mt-site a {
+  /* Zero specificity, so every component's own link colour wins (choices, tiles, cards). */
+  .mt-site :where(a) {
     color: inherit;
   }
 
@@ -161,9 +162,9 @@
   .mt-theme-terracotta {
     --bg: var(--mt-terra);
     --fg: #fff;
-    --muted: #fff3ee;
+    --muted: #fff;
     --accent: #fff;
-    --accent-ink: #ffe9e1;
+    --accent-ink: #fff;
     --card: #fff;
     --card-alt: #fff;
     --line: rgb(255 255 255 / 30%);
@@ -812,7 +813,7 @@
   }
   .mt-tp__big small { font-size: 26px; }
   .mt-tp__sub { color: var(--mt-brown); font-weight: 600; font-size: 13px; }
-  .mt-tp__label { margin-top: 14px; color: var(--mt-green); font-weight: 500; }
+  .mt-tp__label { margin-top: 14px; color: #00704c; font-weight: 600; }
   .mt-tp__link { margin-top: 10px; color: var(--mt-terra-ink); font-size: 13px; text-decoration: underline; }
   .mt-stars {
     display: inline-flex;
