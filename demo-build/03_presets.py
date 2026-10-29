@@ -1,7 +1,7 @@
-"""Default presets for every Meilleurtaux block + the component library page.
+"""Selectable presets for every Meilleurtaux block (never the default: blank add stays blank) + the component library page.
 
 Presets are taken from the real published pages (first instance of each block),
-so a block added in the editor arrives with real Meilleurtaux copy and imagery.
+so picking a preset gives real Meilleurtaux copy and imagery.
 The library page shows every section in each of its layouts, built from the
 same presets so it never drifts from the schema.
 
@@ -95,10 +95,12 @@ def push_presets(found):
             pid = cur["id"]
         else:
             pid = api("POST", "/presets/", body)["preset"]["id"]
-        if comp.get("preset_id") != pid:
+        # Presets stay selectable in the picker, but none is the default: adding a block
+        # gives a blank one, so editors choose a preset OR start from scratch (operator rule, 2026-10-29).
+        if comp.get("preset_id"):
             keep = {k: comp[k] for k in ("name", "schema", "display_name", "is_root", "is_nestable", "component_group_uuid",
                                          "icon", "color", "preview_field", "description", "image") if k in comp}
-            api("PUT", f"/components/{comp['id']}", {"component": {**keep, "preset_id": pid}})
+            api("PUT", f"/components/{comp['id']}", {"component": {**keep, "preset_id": None}})
         print("preset", name, pid)
     missing = [n for n, c in comps.items() if n.startswith("mt-") and not c.get("is_root") and n not in found]
     if missing:

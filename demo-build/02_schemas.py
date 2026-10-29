@@ -657,7 +657,7 @@ def main():
             try:
                 if name in existing:
                     cur = existing[name]
-                    for keep in ("image", "preset_id"):
+                    for keep in ("image",):  # preset_id is never kept: no default presets
                         if cur.get(keep):
                             comp[keep] = cur[keep]
                     api("PUT", f"/components/{cur['id']}", {"component": comp})

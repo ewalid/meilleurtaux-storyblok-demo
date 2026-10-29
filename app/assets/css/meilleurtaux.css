@@ -2078,4 +2078,15 @@
     .mt-ccard.is-featured .mt-ccard__quote { color: var(--mt-muted); font-size: 16px; }
     .mt-ccard.is-featured .mt-ccard__more { color: var(--mt-terra-ink); }
   }
+
+  .mt-blank-hint {
+    margin: 0 0 16px;
+    padding: 14px 18px;
+    border: 2px dashed #d9c7bf;
+    border-radius: var(--mt-radius);
+    background: rgb(255 255 255 / 75%);
+    color: var(--mt-muted);
+    font-size: 14px;
+    text-align: center;
+  }
 }
