@@ -2,6 +2,7 @@
 // Latest news (automatic, optionally one theme) or hand-picked articles.
 const props = defineProps({ blok: { type: Object, required: true } });
 const lang = useMtLang();
+const tr = useMtT();
 const items = ref([]);
 const loaded = ref(false);
 const active = ref('all');
@@ -53,9 +54,9 @@ const href = s => `/${lang.value ? `${lang.value}/` : ''}${s.full_slug.replace(/
     <div class="mt-sec-head">
       <MtHeading :text="blok.title" :size="blok.title_size || 'm'" class="mt-sec-title" />
     </div>
-    <div v-if="blok.filters && themes.length > 2" class="mt-filters" role="toolbar" aria-label="Filtrer par thème">
+    <div v-if="blok.filters && themes.length > 2" class="mt-filters" role="toolbar" :aria-label="tr('filterTheme')">
       <button v-for="t in themes" :key="t" type="button" class="mt-filter" :class="{ 'is-on': active === t }" :aria-pressed="active === t" @click="active = t">
-        {{ t === 'all' ? 'Toutes les actualités' : MT_CATEGORIES[t] || t }}
+        {{ t === 'all' ? tr('allNews') : tr.category(t) }}
       </button>
     </div>
     <div class="mt-grid mt-grid--3">
@@ -63,7 +64,7 @@ const href = s => `/${lang.value ? `${lang.value}/` : ''}${s.full_slug.replace(/
         <div class="mt-ncard__img"><MtMedia v-if="s.content.image?.filename" :asset="s.content.image" cover :width="700" /></div>
         <div class="mt-ncard__body">
           <div class="mt-ncard__meta">
-            <span class="mt-chip mt-chip--s">{{ MT_CATEGORIES[s.content.category] || 'Actualités' }}</span>
+            <span class="mt-chip mt-chip--s">{{ s.content.category ? tr.category(s.content.category) : tr('news') }}</span>
             <span class="mt-ncard__date">{{ mtDate(s.content.date || s.first_published_at) }}</span>
           </div>
           <h3 class="mt-ncard__title">{{ s.content.title || s.name }}</h3>

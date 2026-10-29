@@ -1,6 +1,7 @@
 <script setup>
 const props = defineProps({ blok: { type: Object, required: true } });
 const lang = useMtLang();
+const t = useMtT();
 const base = computed(() => (lang.value ? `/${lang.value}` : ''));
 useHead({ script: [{ type: 'application/ld+json', children: JSON.stringify({
   '@context': 'https://schema.org',
@@ -17,18 +18,18 @@ useHead({ script: [{ type: 'application/ld+json', children: JSON.stringify({
   <article v-editable="blok" class="mt-article">
     <header class="mt-article__head mt-theme-cream">
       <div class="mt-wrap mt-w-narrow">
-        <nav class="mt-crumbs" aria-label="Fil d'Ariane">
-          <NuxtLink :to="base || '/'">Accueil</NuxtLink><span aria-hidden="true">›</span>
-          <NuxtLink :to="`${base}/actualites`">Actualités</NuxtLink><span aria-hidden="true">›</span>
-          <span>{{ MT_CATEGORIES[blok.category] || 'Actualités' }}</span>
+        <nav class="mt-crumbs" :aria-label="t('breadcrumb')">
+          <NuxtLink :to="base || '/'">{{ t('home') }}</NuxtLink><span aria-hidden="true">›</span>
+          <NuxtLink :to="`${base}/actualites`">{{ t('news') }}</NuxtLink><span aria-hidden="true">›</span>
+          <span>{{ blok.category ? t.category(blok.category) : t('news') }}</span>
         </nav>
-        <span class="mt-chip mt-chip--s">{{ MT_CATEGORIES[blok.category] || 'Actualités' }}</span>
+        <span class="mt-chip mt-chip--s">{{ blok.category ? t.category(blok.category) : t('news') }}</span>
         <h1 class="mt-h mt-h--l">{{ blok.title }}</h1>
         <p v-if="blok.excerpt" class="mt-article__lead">{{ blok.excerpt }}</p>
         <p class="mt-article__meta">
-          <span v-if="blok.date">Publié le {{ mtDate(blok.date, true) }}</span>
-          <span v-if="blok.author"> · par <strong>{{ blok.author }}</strong><template v-if="blok.author_role">, {{ blok.author_role }}</template></span>
-          <span v-if="blok.reading_time"> · {{ blok.reading_time }} de lecture</span>
+          <span v-if="blok.date">{{ t('publishedOn', { d: mtDate(blok.date, true) }) }}</span>
+          <span v-if="blok.author"> · {{ t('by') }} <strong>{{ blok.author }}</strong><template v-if="blok.author_role">, {{ blok.author_role }}</template></span>
+          <span v-if="blok.reading_time"> · {{ t('readingTime', { t: blok.reading_time }) }}</span>
         </p>
       </div>
     </header>

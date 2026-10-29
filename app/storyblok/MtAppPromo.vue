@@ -1,6 +1,7 @@
 <script setup>
 defineProps({ blok: { type: Object, required: true } });
 const lang = useMtLang();
+const t = useMtT();
 const href = l => mtHref(l, lang.value);
 </script>
 
@@ -14,10 +15,10 @@ const href = l => mtHref(l, lang.value);
           <p class="mt-app__text">{{ a.text }}</p>
           <div class="mt-app__row">
             <a v-if="href(a.app_store)" :href="href(a.app_store)" target="_blank" rel="noopener" class="mt-store">
-              <MtIcon name="screen" :size="18" /><span><small>Télécharger dans</small> l'App Store</span>
+              <MtIcon name="screen" :size="18" /><span><small>{{ t('downloadOn') }}</small> App Store</span>
             </a>
             <a v-if="href(a.google_play)" :href="href(a.google_play)" target="_blank" rel="noopener" class="mt-store">
-              <MtIcon name="play" :size="18" /><span><small>Disponible sur</small> Google Play</span>
+              <MtIcon name="play" :size="18" /><span><small>{{ t('availableOn') }}</small> Google Play</span>
             </a>
             <NuxtLink v-if="a.more_label" :to="href(a.more_link) || '/'" class="mt-btn mt-btn--link">{{ a.more_label }} <span class="mt-btn__arrow" aria-hidden="true">→</span></NuxtLink>
           </div>

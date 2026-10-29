@@ -1,6 +1,7 @@
 <script setup>
 defineProps({ blok: { type: Object, required: true } });
 const lang = useMtLang();
+const t = useMtT();
 </script>
 
 <template>
@@ -18,7 +19,7 @@ const lang = useMtLang();
           <figcaption>
             <MtStars :rating="r.rating || 5" />
             <span class="mt-review__name">{{ r.name }}</span>
-            <span class="mt-review__date">{{ r.date }}<template v-if="r.experience"> · expérience du {{ r.experience }}</template></span>
+            <span class="mt-review__date">{{ r.date }}<template v-if="r.experience"> · {{ t('experience', { d: r.experience }) }}</template></span>
           </figcaption>
         </figure>
       </MtScroller>

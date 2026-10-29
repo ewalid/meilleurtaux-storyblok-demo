@@ -571,6 +571,45 @@ PAGES = {
                            "body": rich("Texte de l'article", long=True),
                            "after": None,
                        }, [SEO_TAB])),
+    "mt-offer-page": dict(display_name="Page offre", icon="block-tag", color="#c0543a", is_root=True, is_nestable=False,
+                          description="Une offre ou un code promo : un formulaire guidé + 3 zones réservées. L'offre s'affiche, "
+                                      "compte les jours restants et se termine toute seule à la date de fin.",
+                          schema=plain({
+                              "product": option("Produit concerné", CATEGORIES, "credit-immobilier",
+                                                "Après la date de fin, le bouton renvoie vers la page de ce produit."),
+                              "offer_label": text("Nom de l'offre", "Ex. Offre de bienvenue"),
+                              "amount": text("Avantage", "Ex. 200 € offerts, Frais de dossier offerts", max_length=40),
+                              "promo_code": text("Code promo", "Ex. SPIRICA2026. Laissez vide s'il n'y a pas de code.", translatable=False),
+                              "starts_on": {"type": "datetime", "display_name": "Début de l'offre",
+                                            "description": "Avant cette date, la page affiche « Bientôt disponible »."},
+                              "ends_on": {"type": "datetime", "display_name": "Fin de l'offre",
+                                          "description": "Affiche « Plus que N jours », puis « Offre terminée » après cette date. "
+                                                         "Ajoutez ?preview_date=AAAA-MM-JJ à l'aperçu pour simuler un autre jour."},
+                              "summary": rich("Résumé de l'offre", "2 ou 3 lignes dans la carte de l'offre."),
+                              "partner_logo": media("Logo partenaire", "Ex. l'assureur ou la banque partenaire.", videos=False),
+                              "cta_label": text("Texte du bouton", "Ex. J'en profite"),
+                              "cta_link": link("Lien du bouton"),
+                          }, [
+                              ("Zones de la page", {
+                                  "hero": bloks("Bandeau", ["mt-hero"], "Un seul Bandeau d'ouverture.", maximum=1),
+                                  "simulator": bloks("Simulateur", ["mt-simulator"], "Un simulateur sous l'offre (optionnel).", maximum=1),
+                                  "content": bloks("Contenu", ["mt-card-grid", "mt-accordion", "mt-steps", "mt-text", "mt-logos"],
+                                                   "Jusqu'à 5 sections : avantages, étapes, questions, partenaires…", maximum=5),
+                              }),
+                              ("Conditions", {
+                                  "conditions": rich("Conditions de l'offre", "Affichées dans un bloc dépliable.", long=True),
+                                  "legal_mentions": rich("Mentions légales", "Ex. Un crédit vous engage et doit être remboursé…"),
+                              }),
+                              SEO_TAB,
+                          ])),
+    "mt-redirect": dict(display_name="Redirection", icon="block-arrow-pointer", color="#b0a8a3", is_root=True, is_nestable=False,
+                        description="Envoie une ancienne adresse vers une nouvelle page (migration, page supprimée).",
+                        schema=plain({
+                            "from_path": text("Ancienne adresse", "Commence par /, ex. /credit-immobilier/index.html", translatable=False),
+                            "to": link("Nouvelle page", "Choisissez la page de destination."),
+                            "type": option("Type", [("301", "Définitive (301)"), ("302", "Temporaire (302)")], "301"),
+                            "note": text("Note interne", "Pourquoi cette redirection. Non affiché.", translatable=False),
+                        })),
     "mt-rates-config": dict(display_name="Barème des taux", icon="block-dollar-sign", color="#c0543a", is_root=True, is_nestable=False,
                             description="Les taux du moment, utilisés par tous les simulateurs, tuiles et tableaux du site.",
                             schema=plain({
@@ -648,7 +687,7 @@ def main():
                                           (NAV, "Meilleurtaux · Menu et paramètres", False, True),
                                           (PAGES, "Meilleurtaux · Pages", True, False)]:
         for name, spec in bucket.items():
-            grp = g["Meilleurtaux · Menu et paramètres"] if name in ("mt-site-config", "mt-rates-config") else g[group]
+            grp = g["Meilleurtaux · Menu et paramètres"] if name in ("mt-site-config", "mt-rates-config", "mt-redirect") else g[group]
             comp = {
                 "name": name, "display_name": spec["display_name"], "schema": spec["schema"],
                 "is_root": spec.get("is_root", root), "is_nestable": spec.get("is_nestable", nestable),

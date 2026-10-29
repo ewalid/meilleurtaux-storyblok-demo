@@ -40,7 +40,9 @@ const siteConfig = await getSiteConfig();
 const isMt = computed(() => siteConfig.value?.content?.component === 'mt-site-config');
 const mtLang = useMtLang();
 mtLang.value = await getLanguage(await getSlug());
+mtSetLocale(mtLocale(mtLang.value));
 const mtSite = useMtSite();
+const t = useMtT();
 watchEffect(() => {
   mtSite.value = isMt.value ? siteConfig.value.content : {};
 });
@@ -175,6 +177,7 @@ watch(currentSection, async () => {
 
 watch(() => route.fullPath, async () => {
   mtLang.value = await getLanguage(await getSlug());
+  mtSetLocale(mtLocale(mtLang.value));
 });
 
 watch(route, () => {
@@ -184,7 +187,7 @@ watch(route, () => {
 
 <template>
   <div v-if="isMt" class="mt-site">
-    <a href="#mt-main" class="mt-skip">Aller au contenu</a>
+    <a href="#mt-main" class="mt-skip">{{ t('skip') }}</a>
     <MtHeader :config="siteConfig.content" />
     <div v-if="viewingSiteConfig" class="mt-theme-cream" style="padding: 4rem 0">
       <div class="mt-wrap mt-w-narrow" style="text-align: center">

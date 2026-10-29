@@ -12,10 +12,16 @@ export function mtNumber(v, fallback = 0) {
   return Number.isFinite(n) ? n : fallback;
 }
 
+// Locale for numbers and dates, set from the URL language (fr-FR, nl-BE, en-GB).
+let LOCALE = 'fr-FR';
+export function mtSetLocale(locale) {
+  LOCALE = locale || 'fr-FR';
+}
+
 const fmtCache = {};
 export function mtFormat(n, digits = 0, style = 'decimal') {
-  const key = `${digits}${style}`;
-  fmtCache[key] ||= new Intl.NumberFormat('fr-FR', {
+  const key = `${LOCALE}${digits}${style}`;
+  fmtCache[key] ||= new Intl.NumberFormat(LOCALE, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
     ...(style === 'currency' ? { style: 'currency', currency: 'EUR' } : {}),
@@ -43,5 +49,5 @@ export function mtDate(d, long = false) {
   const date = new Date(String(d).replace(' ', 'T'));
   return Number.isNaN(date.getTime())
     ? ''
-    : date.toLocaleDateString('fr-FR', long ? { day: 'numeric', month: 'long', year: 'numeric' } : { day: '2-digit', month: 'long', year: 'numeric' });
+    : date.toLocaleDateString(LOCALE, long ? { day: 'numeric', month: 'long', year: 'numeric' } : { day: '2-digit', month: 'long', year: 'numeric' });
 }

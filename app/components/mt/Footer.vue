@@ -1,6 +1,7 @@
 <script setup>
 const props = defineProps({ config: { type: Object, default: () => ({}) } });
 const lang = useMtLang();
+const t = useMtT();
 const href = l => mtHref(l, lang.value);
 const year = new Date().getFullYear();
 const copyright = computed(() => (props.config.copyright || '').replace('{year}', year));
@@ -28,13 +29,13 @@ const sent = ref(false);
       </div>
       <div class="mt-footer__side">
         <form class="mt-news-box" @submit.prevent="sent = true">
-          <p class="mt-footer__title">{{ config.newsletter_title || 'Inscrivez-vous à notre newsletter' }}</p>
+          <p class="mt-footer__title">{{ config.newsletter_title || t('newsletter') }}</p>
           <div v-if="!sent" class="mt-news-box__row">
-            <label class="sr-only" for="mt-nl">Votre adresse email</label>
-            <input id="mt-nl" v-model="email" type="email" required placeholder="Votre adresse email" />
-            <button type="submit" class="mt-news-box__go" aria-label="S'inscrire"><MtIcon name="arrow" :size="18" /></button>
+            <label class="sr-only" for="mt-nl">{{ t('email') }}</label>
+            <input id="mt-nl" v-model="email" type="email" required :placeholder="t('email')" />
+            <button type="submit" class="mt-news-box__go" :aria-label="t('subscribe')"><MtIcon name="arrow" :size="18" /></button>
           </div>
-          <p v-else class="mt-news-box__ok">Merci ! Votre inscription est bien prise en compte (démo).</p>
+          <p v-else class="mt-news-box__ok">{{ t('subscribed') }}</p>
           <MtRich :doc="config.newsletter_text" class="mt-news-box__text" />
         </form>
         <div class="mt-footer__social">

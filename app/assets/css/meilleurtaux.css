@@ -2089,4 +2089,83 @@
     font-size: 14px;
     text-align: center;
   }
+
+  /* ------------------------------------------------------------ offer page */
+  .mt-offer__band { position: relative; z-index: 2; margin-top: -48px; padding-bottom: 40px; }
+  .mt-offer__card {
+    display: grid;
+    gap: 10px;
+    max-width: 760px;
+    margin-inline: auto;
+    padding: 28px 24px;
+    border-radius: var(--mt-radius-l);
+    background: #fff;
+    color: var(--mt-ink);
+    box-shadow: 0 24px 60px rgb(107 44 20 / 16%);
+    text-align: center;
+  }
+  @media (width >= 768px) {
+    .mt-offer__card { padding: 36px 48px; }
+  }
+  .mt-offer__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 20px; }
+  .mt-offer__logo { height: 40px; width: auto; object-fit: contain; }
+  .mt-offer__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 99px;
+    background: var(--mt-terra-soft);
+    color: var(--mt-terra-ink);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .mt-offer__badge.is-soon { background: #eef4ff; color: #1f4f99; }
+  .mt-offer__badge.is-ended { background: #efeceb; color: var(--mt-muted); }
+  .mt-offer__label { margin: 6px 0 0; color: var(--mt-brown); font-size: 18px; font-weight: 600; }
+  .mt-offer__amount { margin: 0; color: var(--mt-terra); font-size: 40px; font-weight: 700; line-height: 1.1; }
+  @media (width >= 768px) {
+    .mt-offer__amount { font-size: 52px; }
+  }
+  .mt-offer__summary { color: var(--mt-muted); }
+  .mt-offer__code {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 16px;
+    margin: 6px auto 0;
+    padding: 12px 16px;
+    border: 2px dashed var(--mt-terra);
+    border-radius: var(--mt-radius);
+    background: var(--mt-cream);
+  }
+  .mt-offer__code strong { font-size: 22px; letter-spacing: 0.08em; }
+  .mt-offer__code-label { color: var(--mt-muted); font-size: 14px; }
+  .mt-offer__copy { min-height: 38px; padding: 0 16px; font-size: 14px; }
+  .mt-offer__copy:disabled { opacity: 0.5; cursor: default; }
+  .mt-offer__dates { margin: 0; color: var(--mt-muted); font-size: 13px; }
+  .mt-offer__cta { justify-self: center; margin-top: 8px; }
+  .mt-offer__preview { margin: 0; color: #1f4f99; font-size: 12px; }
+  .mt-offer.is-ended .mt-offer__amount { color: var(--mt-muted); text-decoration: line-through; text-decoration-thickness: 2px; }
+  .mt-offer__legal { padding: 40px 0 64px; background: var(--mt-cream); }
+  .mt-offer__conditions { border-bottom: 1px solid var(--mt-line); }
+  .mt-offer__conditions summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    color: var(--mt-ink);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+  .mt-offer__conditions summary::-webkit-details-marker { display: none; }
+  .mt-offer__conditions[open] summary .mt-icon { transform: rotate(180deg); }
+  .mt-offer__conditions .mt-prose { padding-bottom: 16px; font-size: 15px; }
+  .mt-offer__mentions { margin-top: 20px; color: var(--mt-muted); font-size: 13px; text-align: center; }
+
+  /* ------------------------------------------------------------ redirect (editor view) */
+  .mt-redirect__row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 8px 0 16px; font-size: 18px; color: var(--mt-terra); }
+  .mt-redirect__row code { padding: 8px 12px; border-radius: 8px; background: #fff; color: var(--mt-ink); font-size: 15px; }
 }

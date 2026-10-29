@@ -4,6 +4,7 @@
 const processedSlug = await getProcessedSlug();
 const language = await getLanguage(await getSlug());
 useMtLang().value = language;
+mtSetLocale(mtLocale(language));
 const releaseId = await getReleaseId();
 const story = ref(null);
 const storyblokApi = useStoryblokApi();
@@ -69,7 +70,23 @@ useState('viewingSiteConfig', () => viewingSiteConfig.value).value = viewingSite
 
 const c = story.value?.content || {};
 const name = c.title || story.value?.name;
+
+// hreflang: the same page in every space language (French is the default, unprefixed).
+const alternates = [];
+if (story.value && !c.noindex) {
+  const { data: space } = await storyblokApi.get('cdn/spaces/me');
+  const origin = useRequestURL().origin;
+  const path = processedSlug === 'home' ? '' : `/${processedSlug.replace(/\/$/, '')}`;
+  const href = code => `${origin}${code ? `/${code}` : ''}${path}` || `${origin}/`;
+  alternates.push({ rel: 'alternate', hreflang: 'fr', href: href('') });
+  for (const code of space.space.language_codes || []) {
+    alternates.push({ rel: 'alternate', hreflang: code, href: href(code) });
+  }
+  alternates.push({ rel: 'alternate', hreflang: 'x-default', href: href('') });
+}
+
 useHead({
+  link: alternates,
   title: c.meta_title || (name && processedSlug !== 'home' ? `${name} | Meilleurtaux` : 'Meilleurtaux : Courtier en crédit immobilier, assurances & placement'),
   meta: [
     { name: 'description', content: c.meta_description || c.excerpt || '' },

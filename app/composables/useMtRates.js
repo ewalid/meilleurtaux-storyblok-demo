@@ -31,6 +31,7 @@ export const MT_DURATIONS = ['15', '20', '25'];
 
 export function useMtRates() {
   const sheet = useState('mtRates', () => null);
+  const lang = useMtLang();
   const loading = useState('mtRatesLoading', () => false);
 
   if (!sheet.value && !loading.value && import.meta.client) {
@@ -62,7 +63,7 @@ export function useMtRates() {
       return '';
     }
     const date = new Date(d.replace(' ', 'T'));
-    return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' });
+    return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString(mtLocale(lang.value), { day: '2-digit', month: '2-digit', year: '2-digit' });
   });
 
   return { data, row, rate, updatedLabel, sheet };

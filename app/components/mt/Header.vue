@@ -3,6 +3,7 @@
 // with a mega-menu per item. Mobile: compact logo + drawer with accordions.
 const props = defineProps({ config: { type: Object, default: () => ({}) } });
 const lang = useMtLang();
+const t = useMtT();
 const open = ref(null);
 const drawer = ref(false);
 const mobileOpen = ref(null);
@@ -33,7 +34,7 @@ const accountLabel = computed(() => lastButton.value?.label || 'Mon compte');
 <template>
   <header class="mt-header" :class="{ 'is-open': open }">
     <div class="mt-header__top mt-wrap mt-w-standard">
-      <button type="button" class="mt-header__burger mt-hide-desktop" :aria-expanded="drawer" aria-label="Menu" @click="drawer = !drawer">
+      <button type="button" class="mt-header__burger mt-hide-desktop" :aria-expanded="drawer" :aria-label="t('menu')" @click="drawer = !drawer">
         <MtIcon :name="drawer ? 'close' : 'menu'" :size="26" />
       </button>
       <NuxtLink :to="homeHref" class="mt-header__logo" aria-label="Meilleurtaux, accueil">
@@ -90,7 +91,7 @@ const accountLabel = computed(() => lastButton.value?.label || 'Mon compte');
               <MtIcon name="chevron" :size="18" />
             </button>
             <div v-if="mobileOpen === item._uid" class="mt-drawer__panel">
-              <NuxtLink v-if="href(item.link)" :to="href(item.link)" class="mt-drawer__all">Voir la rubrique</NuxtLink>
+              <NuxtLink v-if="href(item.link)" :to="href(item.link)" class="mt-drawer__all">{{ t('seeSection') }}</NuxtLink>
               <template v-for="col in item.columns" :key="col._uid">
                 <p v-if="col.title" class="mt-mega__title">{{ col.title }}</p>
                 <NuxtLink v-for="l in col.links" :key="l._uid" :to="href(l.link) || '/'">{{ l.label }}</NuxtLink>

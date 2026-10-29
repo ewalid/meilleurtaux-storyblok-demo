@@ -1,6 +1,7 @@
 <script setup>
 // Horizontal scroll-snap track with round arrow buttons (carousels, reviews).
 defineProps({ arrows: { type: Boolean, default: true }, label: { type: String, default: 'Carrousel' } });
+const t = useMtT();
 const track = ref(null);
 const atStart = ref(true);
 const atEnd = ref(false);
@@ -34,8 +35,8 @@ onBeforeUnmount(() => window.removeEventListener('resize', update));
       <slot></slot>
     </div>
     <div v-if="arrows" class="mt-scroller__nav">
-      <button type="button" class="mt-round" :disabled="atStart" aria-label="Précédent" @click="go(-1)"><MtIcon name="left" :size="18" /></button>
-      <button type="button" class="mt-round" :disabled="atEnd" aria-label="Suivant" @click="go(1)"><MtIcon name="right" :size="18" /></button>
+      <button type="button" class="mt-round" :disabled="atStart" :aria-label="t('previous')" @click="go(-1)"><MtIcon name="left" :size="18" /></button>
+      <button type="button" class="mt-round" :disabled="atEnd" :aria-label="t('next')" @click="go(1)"><MtIcon name="right" :size="18" /></button>
     </div>
   </div>
 </template>

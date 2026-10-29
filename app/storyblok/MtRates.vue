@@ -3,7 +3,7 @@ const props = defineProps({ blok: { type: Object, required: true } });
 const layout = computed(() => props.blok.layout || 'table');
 const { row, updatedLabel } = useMtRates();
 const amount = computed(() => mtNumber(props.blok.cost_amount, 200000));
-const TREND = { up: 'En hausse', down: 'En baisse', stable: 'Stable' };
+const t = useMtT();
 const costRows = computed(() => MT_DURATIONS.map((d) => {
   const rt = mtNumber(row(d, 'excellent')?.rate, 0);
   const m = mtMonthly(amount.value, Number(d), rt);
@@ -22,25 +22,25 @@ const costRows = computed(() => MT_DURATIONS.map((d) => {
     <div v-else class="mt-table-wrap">
       <table v-if="layout === 'table'" class="mt-table">
         <thead>
-          <tr><th scope="col">Durée</th><th v-for="p in MT_PROFILES" :key="p.key" scope="col">Taux {{ p.label.toLowerCase() }}</th></tr>
+          <tr><th scope="col">{{ t('loanTermShort') }}</th><th v-for="p in MT_PROFILES" :key="p.key" scope="col">{{ t('rate') }} {{ t(p.key).toLowerCase() }}</th></tr>
         </thead>
         <tbody>
           <tr v-for="d in MT_DURATIONS" :key="d">
-            <th scope="row">{{ d }} ans</th>
+            <th scope="row">{{ t('years', { n: d }) }}</th>
             <td v-for="p in MT_PROFILES" :key="p.key">
               <strong>{{ row(d, p.key)?.rate || '–' }} %</strong>
-              <small v-if="blok.show_trend !== false" :class="`is-${row(d, p.key)?.trend || 'stable'}`">{{ TREND[row(d, p.key)?.trend || 'stable'] }}</small>
+              <small v-if="blok.show_trend !== false" :class="`is-${row(d, p.key)?.trend || 'stable'}`">{{ t(row(d, p.key)?.trend || 'stable') }}</small>
             </td>
           </tr>
         </tbody>
       </table>
       <table v-else class="mt-table">
         <thead>
-          <tr><th scope="col">Durée</th><th scope="col">Taux excellent</th><th scope="col">Mensualité</th><th scope="col">Coût des intérêts pour {{ mtEuros(amount) }}</th></tr>
+          <tr><th scope="col">{{ t('loanTermShort') }}</th><th scope="col">{{ t('rate') }} {{ t('excellent').toLowerCase() }}</th><th scope="col">{{ t('monthly') }}</th><th scope="col">{{ t('interestFor', { a: mtEuros(amount) }) }}</th></tr>
         </thead>
         <tbody>
           <tr v-for="c in costRows" :key="c.d">
-            <th scope="row">{{ c.d }} ans</th>
+            <th scope="row">{{ t('years', { n: c.d }) }}</th>
             <td>{{ mtFormat(c.rate, 2) }} %</td>
             <td>{{ mtEuros(c.monthly) }}</td>
             <td><strong>{{ mtEuros(c.cost) }}</strong></td>
@@ -48,7 +48,7 @@ const costRows = computed(() => MT_DURATIONS.map((d) => {
         </tbody>
       </table>
     </div>
-    <p v-if="blok.show_date !== false && updatedLabel" class="mt-rates__date">Taux moyens constatés au {{ updatedLabel }}, hors assurance.</p>
+    <p v-if="blok.show_date !== false && updatedLabel" class="mt-rates__date">{{ t('ratesAtNoIns', { d: updatedLabel }) }}</p>
     <MtRich :doc="blok.note" class="mt-small" />
     <MtButtons :buttons="blok.buttons" :stack="false" class="mt-sec-foot" />
   </MtSection>

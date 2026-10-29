@@ -7,6 +7,7 @@ const type = computed(() => b.value.type || 'project');
 const layout = computed(() => b.value.layout || 'with_rates');
 const { rate, data } = useMtRates();
 const lang = useMtLang();
+const t = useMtT();
 const uid = b.value._uid;
 
 const duration = ref(String(b.value.default_duration || '20'));
@@ -41,35 +42,37 @@ const insDelCost = computed(() => (amount.value * insDel.value / 100) * years.va
 const consoMonthly = computed(() => mtMonthly(amount.value, years.value, consoRate.value));
 
 const result = computed(() => {
+  const yrs = t('years', { n: years.value });
+  const rate = `${mtFormat(r.value, 2)} %`;
   switch (type.value) {
     case 'monthly':
-      return { label: 'Votre mensualité estimée', value: mtEuros(payment.value), unit: '/ mois', lines: [
-        ['Taux utilisé', `${mtFormat(r.value, 2)} %`],
-        ['Coût des intérêts', mtEuros(interest.value)],
-        ['Durée', `${years.value} ans`],
+      return { label: t('resMonthly'), value: mtEuros(payment.value), unit: t('perMonth'), lines: [
+        [t('rateUsed'), rate],
+        [t('interestCost'), mtEuros(interest.value)],
+        [t('term'), yrs],
       ] };
     case 'capacity':
-      return { label: 'Vous pouvez emprunter environ', value: mtEuros(capAmount.value), unit: '', lines: [
-        ['Mensualité max. (35 % des revenus)', mtEuros(capMonthly.value)],
-        ['Taux utilisé', `${mtFormat(r.value, 2)} %`],
-        ['Durée', `${years.value} ans`],
+      return { label: t('resCapacity'), value: mtEuros(capAmount.value), unit: '', lines: [
+        [t('maxMonthly'), mtEuros(capMonthly.value)],
+        [t('rateUsed'), rate],
+        [t('term'), yrs],
       ] };
     case 'insurance':
-      return { label: 'Économie possible sur votre assurance', value: mtEuros(insBankCost.value - insDelCost.value), unit: '', lines: [
-        ['Assurance de votre banque', mtEuros(insBankCost.value)],
-        ['Avec Meilleurtaux', mtEuros(insDelCost.value)],
-        ['Taux moyen constaté', `${mtFormat(insBank.value, 2)} % → ${mtFormat(insDel.value, 2)} %`],
+      return { label: t('resInsurance'), value: mtEuros(insBankCost.value - insDelCost.value), unit: '', lines: [
+        [t('bankInsurance'), mtEuros(insBankCost.value)],
+        [t('withUs'), mtEuros(insDelCost.value)],
+        [t('avgRate'), `${mtFormat(insBank.value, 2)} % → ${mtFormat(insDel.value, 2)} %`],
       ] };
     case 'consolidation':
-      return { label: 'Votre nouvelle mensualité unique', value: mtEuros(consoMonthly.value), unit: '/ mois', lines: [
-        ['Mensualités actuelles', mtEuros(current.value)],
-        ['Baisse de vos mensualités', `${mtFormat(Math.max(0, (1 - consoMonthly.value / current.value) * 100), 0)} %`],
-        ['Taux moyen du rachat', `${mtFormat(consoRate.value, 2)} %`],
+      return { label: t('resConsolidation'), value: mtEuros(consoMonthly.value), unit: t('perMonth'), lines: [
+        [t('currentPayments'), mtEuros(current.value)],
+        [t('paymentDrop'), `${mtFormat(Math.max(0, (1 - consoMonthly.value / current.value) * 100), 0)} %`],
+        [t('consoRate'), `${mtFormat(consoRate.value, 2)} %`],
       ] };
     default:
       return mode.value === 'monthly'
-        ? { label: `Avec ${mtEuros(monthly.value)} par mois, vous pouvez emprunter`, value: mtEuros(projectAmount.value), unit: '', lines: [['Sur', `${years.value} ans`], ['Taux utilisé', `${mtFormat(r.value, 2)} %`]] }
-        : { label: `Pour emprunter ${mtEuros(amount.value)}, votre mensualité serait`, value: mtEuros(projectMonthly.value), unit: '/ mois', lines: [['Sur', `${years.value} ans`], ['Taux utilisé', `${mtFormat(r.value, 2)} %`]] };
+        ? { label: t('resProjectMonthly', { m: mtEuros(monthly.value) }), value: mtEuros(projectAmount.value), unit: '', lines: [[t('term'), yrs], [t('rateUsed'), rate]] }
+        : { label: t('resProjectAmount', { a: mtEuros(amount.value) }), value: mtEuros(projectMonthly.value), unit: t('perMonth'), lines: [[t('term'), yrs], [t('rateUsed'), rate]] };
   }
 });
 const href = l => mtHref(l, lang.value);
@@ -83,28 +86,28 @@ const href = l => mtHref(l, lang.value);
         <div class="mt-sim__fields">
           <template v-if="type === 'project'">
             <div :class="{ 'is-dim': mode !== 'monthly' }" @pointerdown="mode = 'monthly'" @focusin="mode = 'monthly'">
-              <MtRange :id="`${uid}-m`" v-model="monthly" label="Mensualité souhaitée" :min="300" :max="5000" :step="50" />
+              <MtRange :id="`${uid}-m`" v-model="monthly" :label="t('monthlyWanted')" :min="300" :max="5000" :step="50" />
             </div>
-            <p class="mt-sim__or">ou</p>
+            <p class="mt-sim__or">{{ t('or') }}</p>
             <div :class="{ 'is-dim': mode !== 'amount' }" @pointerdown="mode = 'amount'" @focusin="mode = 'amount'">
-              <MtRange :id="`${uid}-a`" v-model="amount" label="Montant du prêt souhaité" :min="20000" :max="1000000" :step="5000" />
+              <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amountWanted')" :min="20000" :max="1000000" :step="5000" />
             </div>
           </template>
           <template v-else-if="type === 'capacity'">
-            <MtRange :id="`${uid}-i`" v-model="income" label="Revenus nets du foyer (par mois)" :min="1000" :max="20000" :step="100" />
-            <MtRange :id="`${uid}-c`" v-model="charges" label="Crédits en cours (par mois)" :min="0" :max="5000" :step="50" />
+            <MtRange :id="`${uid}-i`" v-model="income" :label="t('income')" :min="1000" :max="20000" :step="100" />
+            <MtRange :id="`${uid}-c`" v-model="charges" :label="t('charges')" :min="0" :max="5000" :step="50" />
           </template>
           <template v-else-if="type === 'consolidation'">
-            <MtRange :id="`${uid}-cur`" v-model="current" label="Total de vos mensualités actuelles" :min="200" :max="6000" :step="50" />
-            <MtRange :id="`${uid}-a`" v-model="amount" label="Capital restant dû (tous crédits)" :min="10000" :max="400000" :step="1000" />
+            <MtRange :id="`${uid}-cur`" v-model="current" :label="t('currentMonthly')" :min="200" :max="6000" :step="50" />
+            <MtRange :id="`${uid}-a`" v-model="amount" :label="t('remaining')" :min="10000" :max="400000" :step="1000" />
           </template>
           <template v-else>
-            <MtRange :id="`${uid}-a`" v-model="amount" label="Montant du prêt" :min="20000" :max="1000000" :step="5000" />
+            <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amount')" :min="20000" :max="1000000" :step="5000" />
           </template>
-          <div class="mt-sim__dur" role="radiogroup" :aria-label="type === 'consolidation' ? 'Nouvelle durée' : 'Durée du prêt'">
-            <span class="mt-range__label">{{ type === 'consolidation' ? 'Nouvelle durée' : 'Durée du prêt' }}</span>
+          <div class="mt-sim__dur" role="radiogroup" :aria-label="type === 'consolidation' ? t('newTerm') : t('loanTerm')">
+            <span class="mt-range__label">{{ type === 'consolidation' ? t('newTerm') : t('loanTerm') }}</span>
             <div class="mt-tabs">
-              <button v-for="d in MT_DURATIONS" :key="d" type="button" role="radio" class="mt-tabs__tab" :class="{ 'is-on': duration === d }" :aria-checked="duration === d" @click="duration = d">{{ d }} ans</button>
+              <button v-for="d in MT_DURATIONS" :key="d" type="button" role="radio" class="mt-tabs__tab" :class="{ 'is-on': duration === d }" :aria-checked="duration === d" @click="duration = d">{{ t('years', { n: d }) }}</button>
             </div>
           </div>
         </div>
