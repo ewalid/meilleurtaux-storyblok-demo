@@ -46,7 +46,7 @@ EXTRA = {
 
 LABELS = {
     "mt-hero": "Bandeau d'ouverture (Hero)", "mt-simulator": "Simulateur", "mt-rates": "Tableau des taux",
-    "mt-trust": "Bandeau de confiance", "mt-feature-card": "Carte mise en avant", "mt-logos": "Logos partenaires",
+    "mt-market-rate": "Taux du marché (données BCE)", "mt-trust": "Bandeau de confiance", "mt-feature-card": "Carte mise en avant", "mt-logos": "Logos partenaires",
     "mt-carousel": "Carrousel de cartes", "mt-card-grid": "Grille de cartes", "mt-steps": "Étapes + vidéo",
     "mt-accordion": "Questions / accordéon", "mt-news": "Actualités", "mt-guides": "Guides", "mt-reviews": "Avis clients",
     "mt-app-promo": "Applications mobiles", "mt-alert": "Bandeau d'information", "mt-toc": "Sommaire",
@@ -54,7 +54,7 @@ LABELS = {
 }
 
 # Library: which option to vary per section (all its values are shown).
-VARY = {"mt-hero": "layout", "mt-simulator": "type", "mt-rates": "layout", "mt-feature-card": "layout",
+VARY = {"mt-hero": "layout", "mt-simulator": "type", "mt-rates": "layout", "mt-market-rate": "indicator", "mt-feature-card": "layout",
         "mt-logos": "layout", "mt-carousel": "layout", "mt-card-grid": None, "mt-accordion": "layout",
         "mt-cta": "layout", "mt-alert": "tone"}
 
