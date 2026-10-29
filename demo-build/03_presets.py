@@ -18,7 +18,7 @@ from sb import api, all_pages
 
 SOURCES = ["home", "credit-immobilier", "assurance-de-pret", "rachat-de-credit", "simulation-credit-immobilier",
            "site-config", "parametres/bareme-des-taux", "actualites/rachat-de-credits-banques-plus-strictes"]
-PRESET_NAME = "Meilleurtaux (par défaut)"
+PRESET_NAME = "Modèle Meilleurtaux"
 
 # Blocks never used on a page yet: hand-written presets.
 EXTRA = {
