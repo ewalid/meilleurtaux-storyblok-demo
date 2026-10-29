@@ -92,7 +92,7 @@ const href = l => mtHref(l, lang.value);
             </div>
             <p class="mt-sim__or">{{ t('or') }}</p>
             <div :class="{ 'is-dim': mode !== 'amount' }" @pointerdown="mode = 'amount'" @focusin="mode = 'amount'">
-              <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amountWanted')" :min="amountMin" :max="1000000" :step="5000" />
+              <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amountWanted')" :min="amountMin" :max="1000000" :step="amountMin === 1000 ? 500 : 5000" />
             </div>
           </template>
           <template v-else-if="type === 'capacity'">
@@ -104,7 +104,7 @@ const href = l => mtHref(l, lang.value);
             <MtRange :id="`${uid}-a`" v-model="amount" :label="t('remaining')" :min="10000" :max="400000" :step="1000" />
           </template>
           <template v-else>
-            <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amount')" :min="amountMin" :max="1000000" :step="5000" />
+            <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amount')" :min="amountMin" :max="1000000" :step="amountMin === 1000 ? 500 : 5000" />
           </template>
           <div class="mt-sim__dur" role="radiogroup" :aria-label="type === 'consolidation' ? t('newTerm') : t('loanTerm')">
             <span class="mt-range__label">{{ type === 'consolidation' ? t('newTerm') : t('loanTerm') }}</span>
