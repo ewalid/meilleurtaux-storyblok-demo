@@ -44,13 +44,27 @@ const ctaHref = computed(() => mtHref(props.blok.cta_link, lang.value));
 
 const copied = ref(false);
 async function copy() {
+  const code = props.blok.promo_code || '';
+  let ok = false;
   try {
-    await navigator.clipboard.writeText(props.blok.promo_code);
-    copied.value = true;
-    setTimeout(() => (copied.value = false), 2000);
+    await navigator.clipboard.writeText(code);
+    ok = true;
   }
   catch {
-    copied.value = false;
+    // Clipboard API refused (no focus or permission): classic fallback.
+    const el = document.createElement('textarea');
+    el.value = code;
+    el.setAttribute('readonly', '');
+    el.style.position = 'fixed';
+    el.style.opacity = '0';
+    document.body.appendChild(el);
+    el.select();
+    ok = document.execCommand('copy');
+    el.remove();
+  }
+  copied.value = ok;
+  if (ok) {
+    setTimeout(() => (copied.value = false), 2000);
   }
 }
 const NuxtLink = resolveComponent('NuxtLink');

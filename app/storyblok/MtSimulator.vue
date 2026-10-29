@@ -26,6 +26,8 @@ watch(() => [b.value.default_amount, b.value.default_monthly, b.value.default_in
 });
 
 const years = computed(() => Number(duration.value));
+// Consumer loans start well below a mortgage: the scale follows the default amount.
+const amountMin = computed(() => (mtNumber(b.value.default_amount, 20000) < 20000 ? 1000 : 20000));
 const r = computed(() => rate(duration.value, b.value.rate_profile || 'tres-bon'));
 const insBank = computed(() => mtNumber(data.value.insurance_bank_rate, 0.34));
 const insDel = computed(() => mtNumber(data.value.insurance_delegated_rate, 0.1));
@@ -90,7 +92,7 @@ const href = l => mtHref(l, lang.value);
             </div>
             <p class="mt-sim__or">{{ t('or') }}</p>
             <div :class="{ 'is-dim': mode !== 'amount' }" @pointerdown="mode = 'amount'" @focusin="mode = 'amount'">
-              <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amountWanted')" :min="20000" :max="1000000" :step="5000" />
+              <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amountWanted')" :min="amountMin" :max="1000000" :step="5000" />
             </div>
           </template>
           <template v-else-if="type === 'capacity'">
@@ -102,7 +104,7 @@ const href = l => mtHref(l, lang.value);
             <MtRange :id="`${uid}-a`" v-model="amount" :label="t('remaining')" :min="10000" :max="400000" :step="1000" />
           </template>
           <template v-else>
-            <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amount')" :min="20000" :max="1000000" :step="5000" />
+            <MtRange :id="`${uid}-a`" v-model="amount" :label="t('amount')" :min="amountMin" :max="1000000" :step="5000" />
           </template>
           <div class="mt-sim__dur" role="radiogroup" :aria-label="type === 'consolidation' ? t('newTerm') : t('loanTerm')">
             <span class="mt-range__label">{{ type === 'consolidation' ? t('newTerm') : t('loanTerm') }}</span>
