@@ -21,7 +21,23 @@ SOURCES = ["home", "credit-immobilier", "assurance-de-pret", "rachat-de-credit",
 PRESET_NAME = "Modèle Meilleurtaux"
 
 # Blocks never used on a page yet: hand-written presets.
+# Page types that also get a selectable template (never the default).
+ROOT_PRESETS = {"mt-offer-page": "Modèle offre"}
+
 EXTRA = {
+    "mt-offer-page": {
+        "component": "mt-offer-page", "product": "credit-consommation", "offer_label": "Offre de bienvenue",
+        "amount": "Frais de dossier offerts", "promo_code": "BIENVENUE2026",
+        "starts_on": "2026-10-01 00:00", "ends_on": "2026-12-31 23:59",
+        "summary": {"type": "doc", "content": [{"type": "paragraph", "content": [
+            {"type": "text", "text": "Pour toute demande de crédit à la consommation déposée avant le 31/12/2026 avec le code ci-dessous."}]}]},
+        "cta_label": "J'en profite",
+        "cta_link": {"linktype": "url", "url": "#simulateur", "fieldtype": "multilink"},
+        "conditions": {"type": "doc", "content": [{"type": "paragraph", "content": [
+            {"type": "text", "text": "Offre réservée aux nouveaux clients, sous réserve d'acceptation du dossier par l'organisme prêteur. Une seule utilisation par foyer."}]}]},
+        "legal_mentions": {"type": "doc", "content": [{"type": "paragraph", "content": [
+            {"type": "text", "text": "Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager."}]}]},
+    },
     "mt-text": {"component": "mt-text", "eyebrow": "Le guide de l'emprunteur", "title": "Bien préparer son projet immobilier",
                 "body": {"type": "doc", "content": [
                     {"type": "paragraph", "content": [{"type": "text", "text": "Avant de rencontrer une banque, faites le point sur votre apport, vos revenus et vos charges. Un courtier vous aide à présenter un dossier solide et à négocier les meilleures conditions."}]}]},
@@ -83,13 +99,13 @@ def push_presets(found):
     comps = {c["name"]: c for c in all_pages("/components/", "components")}
     existing = {(p["component_id"], p["name"]): p for p in api("GET", "/presets/").get("presets", [])}
     for name, comp in comps.items():
-        if not name.startswith("mt-") or comp.get("is_root") or name not in found:
+        if not name.startswith("mt-") or (comp.get("is_root") and name not in ROOT_PRESETS) or name not in found:
             continue
-        body = {"preset": {"name": PRESET_NAME, "component_id": comp["id"], "preset": found[name]}}
+        body = {"preset": {"name": ROOT_PRESETS.get(name, PRESET_NAME), "component_id": comp["id"], "preset": found[name]}}
         if comp.get("image"):
             # The block picker hover shows the PRESET image, so it must live on the preset too.
             body["preset"]["image"] = comp["image"]
-        cur = existing.get((comp["id"], PRESET_NAME))
+        cur = existing.get((comp["id"], ROOT_PRESETS.get(name, PRESET_NAME)))
         if cur:
             api("PUT", f"/presets/{cur['id']}", body)
             pid = cur["id"]
