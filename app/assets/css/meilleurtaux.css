@@ -1828,40 +1828,79 @@
   .mt-guides li a:hover { color: var(--mt-terra-ink); text-decoration: underline; }
 
   /* ------------------------------------------------------------ reviews */
-  .mt-reviews__grid { display: grid; }
-  @media (width >= 960px) {
-    .mt-reviews__grid { grid-template-columns: 420px minmax(0, 1fr); align-items: center; }
-  }
+  /* Panel pinned left; cards loop right to left and pass UNDER it (live behaviour). */
+  .mt-reviews__band { position: relative; background: var(--mt-cream); overflow: hidden; }
   .mt-reviews__panel {
-    display: grid;
-    gap: 16px;
-    padding: 40px 24px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
     background: #2f2c2b;
     color: #fff;
+    box-shadow: 24px 0 40px rgb(47 44 43 / 18%);
   }
+  .mt-reviews__panel-inner { display: grid; gap: 16px; width: 100%; padding: 40px 24px; }
   @media (width >= 960px) {
-    .mt-reviews__panel { padding: 56px 48px 56px max(40px, calc((100vw - 1260px) / 2)); min-height: 340px; align-content: center; }
+    .mt-reviews__panel {
+      position: absolute;
+      inset: 0 auto 0 0;
+      /* Grows with the screen gutter so the copy always keeps ~360px, on any width. */
+      width: calc(max(40px, (100vw - 1260px) / 2) + 400px);
+    }
+    .mt-reviews__panel-inner { max-width: 400px; margin-left: auto; padding: 48px 40px 48px 0; }
   }
   .mt-reviews__panel .mt-h { color: #fff; }
-  .mt-reviews__link { display: inline-flex; align-items: center; gap: 6px; color: #fff; font-size: 13px; }
-  .mt-reviews__track { padding: 24px; }
-  .mt-reviews__track .mt-scroller__track { grid-auto-columns: min(82%, 300px); }
+  .mt-reviews__link { display: inline-flex; align-items: center; gap: 6px; color: #fff; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+  .mt-reviews__viewport { overflow: hidden; padding: 32px 0; outline-offset: -4px; }
+  @media (width >= 960px) {
+    .mt-reviews__viewport { padding: 44px 0; }
+  }
+  .mt-reviews__track {
+    display: flex;
+    gap: 24px;
+    width: max-content;
+    animation: mt-reviews-loop var(--mt-reviews-duration, 40s) linear infinite;
+  }
+  .mt-reviews__viewport:hover .mt-reviews__track,
+  .mt-reviews__viewport:focus-within .mt-reviews__track { animation-play-state: paused; }
+  @keyframes mt-reviews-loop {
+    to { transform: translateX(calc(-50% - 12px)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mt-reviews__viewport { overflow-x: auto; }
+    .mt-reviews__track { animation: none; padding-inline: 24px; }
+    .mt-reviews__track > [aria-hidden='true'] { display: none; }
+  }
   .mt-review {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 16px;
+    gap: 24px;
+    width: min(78vw, 330px);
+    min-height: 220px;
     margin: 0;
-    padding: 22px;
-    border: 1px solid #ebe3de;
+    padding: 30px 26px 22px;
     border-radius: var(--mt-radius);
     background: #fff;
     color: var(--mt-ink);
+    box-shadow: 0 10px 30px rgb(48 46 45 / 8%);
   }
-  .mt-review blockquote { margin: 0; font-size: 15px; line-height: 1.55; }
-  .mt-review figcaption { display: grid; gap: 4px; font-size: 13px; }
+  .mt-review__mark {
+    position: absolute;
+    top: 6px;
+    left: 20px;
+    color: var(--mt-terra);
+    opacity: 0.18;
+    font: 700 88px/1 Georgia, serif;
+    pointer-events: none;
+  }
+  .mt-review blockquote { position: relative; margin: 0; font-size: 16px; line-height: 1.55; }
+  .mt-review figcaption { display: grid; gap: 8px; font-size: 13px; }
+  .mt-review__who { display: flex; align-items: center; gap: 14px; }
+  .mt-review .mt-stars__s { width: 22px; height: 22px; background: #191919; }
   .mt-review__name { font-weight: 600; }
-  .mt-review__date { color: var(--mt-muted); font-size: 12px; }
+  .mt-review__date { color: var(--mt-ink); font-size: 13px; }
 
   /* ------------------------------------------------------------ apps */
   .mt-apps__grid { display: grid; gap: 32px; align-items: center; }
