@@ -254,6 +254,24 @@ SECTIONS = {
             "buttons": BUTTONS(1),
         }, style_tab(background="white", width="standard", align="left"))),
 
+    "mt-market-rate": dict(
+        display_name="Taux du marché (données BCE)", icon="block-chart", color="#c0543a", preview_field="title",
+        description="Un indicateur officiel lu en direct dans l'API de la Banque centrale européenne : chiffre du mois, tendance et courbe.",
+        schema=section({
+            "indicator": option("Indicateur", [
+                ("credit-immo-fr", "Taux moyen des nouveaux crédits immobiliers (France)"),
+                ("credit-immo-be", "Taux moyen des nouveaux crédits immobiliers (Belgique)"),
+                ("oat-10-fr", "OAT 10 ans (taux d'emprunt de l'État français)"),
+                ("euribor-3m", "Euribor 3 mois"),
+            ], "credit-immo-fr", "Les valeurs viennent de l'API publique de la BCE (mise à jour mensuelle). Rien à saisir."),
+            "eyebrow": EYEBROW(), "title": text("Titre", "Ex. Les taux du marché en ce moment"), "highlight": HIGHLIGHT(),
+            "intro": rich("Texte d'introduction"),
+            "display": option("Affichage", [("chart", "Chiffre + courbe"), ("figure", "Chiffre seul (compact)")], "chart"),
+            "months": option("Période de la courbe", [("6", "6 mois"), ("12", "12 mois"), ("24", "24 mois")], "12"),
+            "comment": rich("Commentaire de l'expert", "Votre lecture du chiffre, affichée à côté. Optionnel."),
+            "buttons": BUTTONS(1),
+        }, style_tab(background="white", title_size="m"))),
+
     "mt-trust": dict(
         display_name="Bandeau de confiance", icon="block-check", color="#c0543a", preview_field="headline",
         description="Grand message de confiance, 3 arguments avec icône et la note Trustpilot.",
@@ -677,7 +695,7 @@ def main():
                               "Jusqu'à 20 sections entre le Hero et l'appel à l'action.", maximum=20), "pos": 2}
     ps["cta"] = {**bloks("Appel à l'action final", ["mt-cta"], "Un seul.", maximum=1), "pos": 3}
     after = PAGES["mt-article"]["schema"]["after"]
-    PAGES["mt-article"]["schema"]["after"] = {**bloks("Sections après l'article", ["mt-cta", "mt-news", "mt-simulator", "mt-card-grid"],
+    PAGES["mt-article"]["schema"]["after"] = {**bloks("Sections après l'article", ["mt-cta", "mt-news", "mt-simulator", "mt-card-grid", "mt-market-rate"],
                                                       "Ex. un simulateur et les articles liés."), "pos": after["pos"] if after else 9}
 
     existing = {c["name"]: c for c in all_pages("/components/", "components")}
