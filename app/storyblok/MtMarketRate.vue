@@ -94,6 +94,6 @@ const chart = computed(() => {
       </div>
       <MtRich v-if="blok.comment" :doc="blok.comment" class="mt-market__comment" />
     </div>
-    <p class="mt-market__source">{{ t('mktSource', { s: data?.source || 'BCE (Banque centrale européenne)' }) }}</p>
+    <p class="mt-market__source">{{ t('mktSource', { s: t('mktEcb') }) }}</p>
   </MtSection>
 </template>

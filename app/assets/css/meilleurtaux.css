@@ -2243,6 +2243,6 @@
     .mt-market__state--loading,
     .mt-market__skeleton { animation: none; }
   }
-  .mt-market__comment { font-size: 15px; background: var(--mt-cream); border-color: transparent; }
+  .mt-market__comment { font-size: 15px; background: var(--card-alt); border-color: transparent; }
   .mt-market__source { margin: 14px 0 0; color: var(--muted); font-size: 12px; }
 }

@@ -6,6 +6,7 @@
  */
 const STRINGS = {
   fr: {
+    'mktEcb': 'BCE (Banque centrale européenne)',
     'mkt_credit-immo-fr': 'Taux moyen des nouveaux crédits immobiliers en France',
     'mkt_credit-immo-be': 'Taux moyen des nouveaux crédits immobiliers en Belgique',
     'mkt_oat-10-fr': 'OAT 10 ans (taux d’emprunt de l’État français)',
@@ -96,6 +97,7 @@ const STRINGS = {
     'conditions': 'Conditions de l\'offre',
   },
   nl: {
+    'mktEcb': 'ECB (Europese Centrale Bank)',
     'mkt_credit-immo-fr': 'Gemiddelde rente op nieuwe woonkredieten in Frankrijk',
     'mkt_credit-immo-be': 'Gemiddelde rente op nieuwe woonkredieten in België',
     'mkt_oat-10-fr': 'OAT 10 jaar (Franse staatsrente)',
@@ -186,6 +188,7 @@ const STRINGS = {
     'conditions': 'Voorwaarden van de actie',
   },
   en: {
+    'mktEcb': 'ECB (European Central Bank)',
     'mkt_credit-immo-fr': 'Average rate on new home loans in France',
     'mkt_credit-immo-be': 'Average rate on new home loans in Belgium',
     'mkt_oat-10-fr': 'French 10-year government bond (OAT)',
